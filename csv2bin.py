@@ -2,27 +2,7 @@
 import tensorflow as tf
 import numpy as np
 
-def write_to_tfrecord(label, binary_image, tfrecord_file):
-    """ This example is to write a sample to TFRecord file. If you want to write
-    more samples, just use a loop.
-    """
-    writer = tf.python_io.TFRecordWriter(tfrecord_file)
-    # write label, shape, and image content to the TFRecord file
-    example = tf.train.Example(features=tf.train.Features(feature={
-                'label': _bytes_feature(label),
-                'image': _bytes_feature(binary_image)
-                }))
-    writer.write(example.SerializeToString())
-    writer.close()
-
-#def write_tfrecord(label, image_file, tfrecord_file):
-#    shape, binary_image = get_image_binary(image_file)
-#    write_to_tfrecord(label, shape, binary_image, tfrecord_file)
-
-
 DATA_PATH = './fer2013.csv'
-
-NUM_RECORDS=35887
 
 def read_csv():
   filename_queue = tf.train.string_input_producer([DATA_PATH])
