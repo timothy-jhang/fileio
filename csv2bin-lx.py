@@ -11,9 +11,9 @@ DATA_PATH = './fer2013.csv'
 NUM_TRAINS=28709
 NUM_PUBTST=3589
 NUM_PRITST=3589
-TRAIN_FILE='fer2013train.bin'
-PUBTST_FILE='fer2013pubtst.bin'
-PRITST_FILE='fer2013pritst.bin'
+TRAIN_FILE='fer2013train_lxip.bin'
+PUBTST_FILE='fer2013pubtst_lxip.bin'
+PRITST_FILE='fer2013pritst_lxip.bin'
 
 def get_landmarks(image):
   #print('image=',type(image))
@@ -50,7 +50,7 @@ def get_landmarks(image):
       landmarks_vectorised.append(y)
 
     for i in range(0, 8):
-      landmarks_vectorised.append(0)
+      landmarks_vectorised.append(1)
 
     # self.data['landmarks_vectorised'] = landmarks_vectorised
   return landmarks_vectorised
@@ -92,9 +92,17 @@ def main( ):
       ia = str(l) + ' ' + d 
       ia = [ np.uint8(int(f)) for f in ia.split() ] 
       ba= bytearray(ia)
-      for lp in lx:
-        bp = bytearray(pack("f", lp)) 
-        ba = ba + bp
+#      if i==0:
+#      print('lx=',lx)
+      ix = [ lp+64 for lp in lx ] 
+#      print('i=',i, 'ix=',ix)
+      ux = [ np.uint8(ip) for ip in ix ] 
+#      print('ux=',ux)
+#      for lp in lx:
+#        bp = bytearray(pack("i", lp+64)) # add 64
+#        ba = ba + bp
+      bb = bytearray(ux)
+      ba = ba + bb
       if row['Usage']=='Training': #i < NUM_TRAINS :
         train_file.write(ba)
       elif row['Usage']=='PublicTest': 
